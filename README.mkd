@@ -6,19 +6,19 @@ Python package allowing conversions of data by automatic propagation.
     import conspread
 
     # define my converters
-    def my\_a\_to\_b\_converter(a):
+    def my_a_to_b_converter(a):
         b = a.upper()
         return b
 
-    def my\_b\_to\_c\_converter(b):
+    def my_b_to_c_converter(b):
         c = 'payload: ' + b + '/payload'
         return c
 
 
     # creation of the main object
     cp = conspread.ConvertionPropagater({
-        'a': {'b': my\_a\_to\_b\_converter},
-        'b': {'c': my\_b\_to\_c\_converter},
+        'a': {'b': my_a_to_b_converter},
+        'b': {'c': my_b_to_c_converter},
     })
 
     # convert a to c
