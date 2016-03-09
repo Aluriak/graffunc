@@ -1,0 +1,8 @@
+*.pyc
+__pycache__/
+venv/
+*.vim
+*.logs
+asp_materials/
+conspread.egg-info/
+dist/

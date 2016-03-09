@@ -1,0 +1,36 @@
+# Convertion Spreading
+Python package allowing conversions of data by automatic propagation.
+
+## usage example
+
+    import conspread
+
+    # define my converters
+    def my\_a\_to\_b\_converter(a):
+        b = a.upper()
+        return b
+
+    def my\_b\_to\_c\_converter(b):
+        c = 'payload: ' + b + '/payload'
+        return c
+
+
+    # creation of the main object
+    cp = conspread.ConvertionPropagater({
+        'a': {'b': my\_a\_to\_b\_converter},
+        'b': {'c': my\_b\_to\_c\_converter},
+    })
+
+    # convert a to c
+    assert cp.convert('data', source='a', target='c') == 'payload: DATA/payload'
+
+
+## installation
+
+    pip install conspread
+
+
+## links
+[github](http://github.com/aluriak/conspread) and [pypi](http://pypi.python.org/pypi/conspread)
+
+
