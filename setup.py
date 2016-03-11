@@ -7,7 +7,7 @@ from pip.download import PipSession
 # import the data inside package/info.py file, without trigger the
 #  importing of the whole package.
 #  equivalent to the python2 execfile routine.
-INFO_FILE = 'conspread/info.py'
+INFO_FILE = 'graffunc/info.py'
 with open(INFO_FILE) as fd:
     code = compile(fd.read(), INFO_FILE, 'exec')
     local_vars = {}
@@ -35,10 +35,10 @@ setup(
 
     author = "lucas bourneuf",
     author_email = "lucas.bourneuf@openmailbox.org",
-    description = "Convertion by propagation",
+    description = "Graph of functions and pathfinder",
     long_description = open(path_to('README.mkd')).read(),
-    keywords = "graph convertion",
-    url = "https://github.com/Aluriak/conspread",
+    keywords = "graph function",
+    url = "https://github.com/Aluriak/graffunc",
 
     classifiers = [
         "Development Status :: 2 - Pre-Alpha",

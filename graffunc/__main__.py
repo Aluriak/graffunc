@@ -5,7 +5,7 @@ Refer to unit tests for further examples.
 
 """
 
-from conspread import ConvertionSpreader
+from graffunc import ConvertionSpreader
 
 
 def my_a_to_b_converter(a):
