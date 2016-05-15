@@ -4,5 +4,5 @@ venv/
 *.vim
 *.logs
 asp_materials/
-conspread.egg-info/
+graffunc.egg-info/
 dist/
