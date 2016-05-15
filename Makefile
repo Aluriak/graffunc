@@ -21,3 +21,6 @@ upload:
 	$(PYTHON) setup.py sdist upload
 install:
 	$(PYTHON) -m pip install -U $(PACKAGE)
+
+devel:
+	pip devel
