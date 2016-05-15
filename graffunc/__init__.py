@@ -2,4 +2,4 @@
 from .commons import configure_logger
 configure_logger()
 
-from .conspread import ConvertionSpreader
+from .graffunc import graph
