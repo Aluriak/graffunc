@@ -1,5 +1,5 @@
 # configure the logger
-from .commons import configure_logger
+from graffunc.commons import configure_logger
 configure_logger()
 
-from .conspread import ConvertionSpreader
+from graffunc.graffunc import graffunc
