@@ -5,10 +5,10 @@ Unit tests about the solving module.
 
 import unittest
 
-from conspread import solving
+from graffunc import solving
 
 
-class TestConSpreadWidely(unittest.TestCase):
+class TestGraffuncWidely(unittest.TestCase):
 
     def test_chain(self):
         self.assert_paths(

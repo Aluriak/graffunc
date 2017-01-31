@@ -5,10 +5,10 @@ Unit tests about the whole package.
 
 import unittest
 
-from conspread import ConvertionSpreader
+from graffunc import graffunc
 
 
-class TestConSpreadWidely(unittest.TestCase):
+class TestGraffuncObject(unittest.TestCase):
 
     def setUp(self):
         def my_a_to_b_converter(a):
