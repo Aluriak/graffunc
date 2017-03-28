@@ -64,7 +64,7 @@ def greedy(graph:dict, sources:iter, target_types:iter) -> iter:
     targets = frozenset(target_types)
     founds = frozenset(sources)
     unused_conversions = set(flatted_conversions(graph))
-    if not founds.issubset(seeds(graph)):
+    if not founds.issubset(frozenset(all_types(graph))):
         raise ValueError("A source type is not in conversion graph.")
     while targets and unused_conversions:
         for preds, succs, func in unused_conversions:
