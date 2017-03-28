@@ -2,6 +2,7 @@
 Definition of the main class of the API, ConvertionSpreader.
 
 """
+import itertools
 from collections import defaultdict
 
 from . import validator
@@ -12,8 +13,6 @@ from graffunc import path_walk, path_search
 
 class graffunc:
     """Defines an API for build and solve a network of functions.
-
-    Note that the network is buid each time the function is called.
 
     """
 
@@ -49,6 +48,26 @@ class graffunc:
         """Return the same data, once converted to target from source"""
         return path_walk.applied(self._paths_dict, dict(sources),
                                  frozenset(targets), search=search)
+
+    def reachables(self, sources:iter) -> iter((callable, type)):
+        """Return the types reachable and used function
+        if given sources are available.
+
+        """
+        yield from path_walk.theoric_exploration(
+            self._paths_dict, frozenset(sources)
+        )
+
+    def reachables_types(self, sources:iter, include_sources:bool=True) -> frozenset:
+        """Return the types reachable if given sources are available.
+
+        include_sources -- sources types are also returned
+
+        """
+        sources = frozenset(sources)
+        return frozenset(itertools.chain.from_iterable(
+            types for _, types in self.reachables(sources)
+        )) | sources if include_sources else {}
 
     def path(self, data, source, target) -> iter:
         """Yield the functions"""
