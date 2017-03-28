@@ -6,7 +6,7 @@ all:
 
 t: test
 test:
-	pytest graffunc -v --ignore=venv/
+	pytest graffunc -v --ignore=venv/ --doctest-module
 
 
 test_register:
