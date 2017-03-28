@@ -31,5 +31,5 @@ Python 3 package allowing manipulation of data by graph pathfinding.
 
 
 ## links
-[github](http://github.com/aluriak/graffunc) and [pypi](http://pypi.python.org/pypi/graffunc
+[github](http://github.com/aluriak/graffunc) and [pypi](http://pypi.python.org/pypi/graffunc)
 
