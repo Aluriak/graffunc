@@ -7,7 +7,7 @@ from collections import defaultdict
 from . import validator
 from . import solving
 from graffunc import logger
-from graffunc import path_search
+from graffunc import path_walk, path_search
 
 
 class graffunc:
@@ -45,15 +45,14 @@ class graffunc:
             self._paths_dict[sources][targets] = func
         self.validate()
 
-    def convert(self, sources:dict, target, search=path_search.greedy):
+    def convert(self, sources:dict, targets:iter, search=path_search.greedy) -> dict:
         """Return the same data, once converted to target from source"""
-        path = solving.windowed_shortest_path(self.paths_dict, source, target)
-        for source, target in path:
-            data = self.paths_dict[source][target](data)
-        return data
+        return path_walk.applied(self._paths_dict, dict(sources),
+                                 frozenset(targets), search=search)
 
     def path(self, data, source, target) -> iter:
         """Yield the functions"""
+        yield from ()
 
     @property
     def paths_dict(self) -> dict:
