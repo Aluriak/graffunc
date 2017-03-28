@@ -5,24 +5,27 @@ Refer to unit tests for further examples.
 
 """
 
-from graffunc import ConvertionSpreader
+from graffunc import graffunc, InconvertibleError
 
 
 def my_a_to_b_converter(a):
     b = a.upper()
-    return b
+    return {'b': b}
 def my_b_to_c_converter(b):
     c = 'payload: ' + b + '/payload'
-    return c
+    return {'c': c}
+def my_a_to_c_converter(a):
+    raise InconvertibleError()
 
 
 # creation of the main object
-cp = ConvertionSpreader({
-    'a': {'b': my_a_to_b_converter},
+grfc = graffunc({
+    ('a',): {('b',): my_a_to_b_converter},
 })
 # dynamic modification of the object
-cp.add(my_b_to_c_converter, source='b', target='c')
+grfc.add(my_b_to_c_converter, sources={'b'}, targets={'c'})
+grfc.add(my_a_to_c_converter, sources={'a'}, targets={'c'})
 
 
-assert 'DATA' == cp.convert('data', source='a', target='b')
-assert 'payload: DATA/payload' == cp.convert('data', source='a', target='c')
+assert {'b': 'HELLO'} == grfc.convert(sources={'a': 'hello'}, targets={'b'})
+assert {'c': 'payload: HELLO/payload'} == grfc.convert(sources={'a': 'hello'}, targets={'c'})
