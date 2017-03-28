@@ -41,8 +41,7 @@ def applied(conv_graph:dict, sources:dict, targets:iter,
 
     """
     data = dict(sources)  # {type: value} for all found data
-    reached = set(sources.keys())
-    searcher = search(conv_graph, frozenset(reached), frozenset(targets))
+    searcher = search(conv_graph, frozenset(data), frozenset(targets))
     conversion_succeed = True
 
     path = next(searcher, None)
@@ -58,8 +57,12 @@ def applied(conv_graph:dict, sources:dict, targets:iter,
                 assert data[type] == val, ("New val {} is not the same as the "
                                            "old {}".format(val, data[type]))
             data[type] = val
-        reached |= succs
-        if targets.issubset(reached):
+        if targets.issubset(data):
             return {t: v for t, v in data.items() if t in targets}
-        path = next(searcher, None)
+
+        try:
+            # send False to the searcher if the conversion was unsuccesful
+            path = searcher.send(bool(results))
+        except StopIteration:
+            path = None
     return data
