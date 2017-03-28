@@ -2,7 +2,7 @@
 
 import inspect
 from math import sqrt
-import graffunc as gf
+import graffunc
 
 
 PHYSIC_GRAVITATIONNAL_CONSTANT = 6.67e-11
@@ -69,7 +69,13 @@ def conv_semiminoraxis_from_eccentricity_semimajoraxis(eccentricity, semimajorax
 
 
 def properties(func):
-    """Return (args names, (return annotation splitted by comma)) of given func"""
+    """Return (args names, (return annotation splitted by comma)) of given func
+
+    >>> def f(a, b) -> 'c,d': pass
+    >>> properties(f)
+    (('a', 'b'), ('c', 'd'))
+
+    """
     specs = inspect.getfullargspec(func)
     return tuple(specs.args), tuple(specs.annotations['return'].split(','))
 
@@ -79,16 +85,17 @@ def converters():
     return tuple(attr for attr_name, attr in globals().items()
                  if callable(attr) and attr_name.startswith('conv_'))
 
+
 if __name__ == "__main__":
-    graph = gf.graph()
+    graph = graffunc.graffunc()
     for converter in converters():
         arg_types, ret_type = properties(converter)
-        graph.add(inputs=arg_types, outputs=ret_type, converter=converter)
+        graph.add(converter, sources=arg_types, targets=ret_type)
 
     for start in (('eccentricity', 'distance', 'speed', 'mass1', 'mass2'),
                   ('semimajoraxis', 'speed', 'mass1', 'mass2'),
                   ('eccentricity', 'semimajoraxis')):
         print('STARTING:', start)
-        for converter, found in graph.exploration(start):
+        for converter, found in graph.reachables(start):
             print('\t', ', '.join(found).ljust(20), '\t\t(using', converter.__name__ + ')')
         print()
