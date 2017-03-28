@@ -49,7 +49,6 @@ def applied(conv_graph:dict, sources:dict, targets:iter,
     while path:
         preds, succs, converter = path
         assert conv_graph[preds][succs] == converter
-        print('TUHHDY:', preds, succs, converter)
         try:
             results = converter(**{type: data[type] for type in preds}).items()
         except InconvertibleError:
