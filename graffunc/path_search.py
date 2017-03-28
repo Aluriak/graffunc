@@ -12,7 +12,39 @@ Functions around there share the following properties:
 
 
 from graffunc import logger, NoPathFound
-from graffunc.conv_graph import flatted_conversions, seeds
+from graffunc.conv_graph import flatted_conversions, all_types
+
+
+def exploration(graph:dict, sources:iter) -> iter:
+    """Yield conversion operations to make. Expect to receive an indication
+    about conversion success.
+
+    graph -- {{pred types}: {{succ types}: function}} mapping
+    sources -- iterable of types available
+    yield -- functions to apply on data
+    receive -- False if last yielded function does not works
+
+    This implementation is greedy : it will basically try everything until
+    nothing seems doable.
+
+    """
+    founds = frozenset(sources)
+    unused_conversions = set(flatted_conversions(graph))
+    if not founds.issubset(frozenset(all_types(graph))):
+        print(founds, tuple(all_types(graph)))
+        raise ValueError("A source type is not in conversion graph.")
+    while unused_conversions:
+        for preds, succs, func in unused_conversions:
+            if preds.issubset(founds) and not succs.issubset(founds):
+                break
+        else:  # no possible conversion found
+            return frozenset(founds)
+        # in all cases, the conversion is not interesting
+        unused_conversions.remove((preds, succs, func))
+        if (yield preds, succs, func) is False:
+            pass  # the conversion failed
+        else:  # the conversion succeed
+            founds |= succs
 
 
 def greedy(graph:dict, sources:iter, target_types:iter) -> iter:
