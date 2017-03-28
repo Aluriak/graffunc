@@ -6,46 +6,55 @@ from collections import defaultdict
 
 from . import validator
 from . import solving
-from . import commons
+from graffunc import logger
+from graffunc import path_search
 
 
-LOGGER = commons.logger()
+class graffunc:
+    """Defines an API for build and solve a network of functions.
 
-
-class ConvertionSpreader:
-    """Defines an API for build and solve a network of converters.
-
-    Note that the network is buid each time the convert function is called.
-    FrozenConvertionSpreader class is a solution for a quicker version.
+    Note that the network is buid each time the function is called.
 
     """
 
     def __init__(self, paths_dict=None):
         """Expect a dict {source: {target: converter function}}"""
-        paths_dict = paths_dict if paths_dict else {}
-        self._paths_dict = defaultdict(dict, paths_dict)
-        validator.validate_paths_dict(self.paths_dict)
-        assert validator.is_valid_paths_dict(self.paths_dict)
-        self._dirty_asp = False
+        self._paths_dict = defaultdict(dict, {
+            frozenset(preds): {frozenset(succs): func for succs, func in sub.items()}
+            for preds, sub in (paths_dict or {}).items()
+        })
+        self.validate()
 
-    def add(self, func, source, target):
+
+    def validate(self):
+        """Perform analysis of internal data. Raise ValueError on error."""
+        validator.validate_paths_dict(self.paths_dict)
+        if not validator.is_valid_paths_dict(self.paths_dict):
+            raise ValueError("validator.is_valid_paths_dict does not consider "
+                             "given paths_dict to be valid: " + str(self._paths_dict))
+
+    def add(self, func:callable, sources:iter, targets:iter):
         """Add given func as converter from source to target"""
-        previous_converter = self.paths_dict[source].get(target, None)
+        sources, targets = frozenset(sources), frozenset(targets)
+        previous_converter = self._paths_dict[sources].get(targets, None)
         if previous_converter:
             raise ValueError('A converter ' + str(previous_converter)
-                             + ' already exist for source ' + str(source)
-                             + ' and target ' + str(target) + '.')
+                             + ' already exist for source ' + str(sources)
+                             + ' and target ' + str(targets) + '.')
         else:
-            self.paths_dict[source][target] = func
-            self._dirty_asp = True
+            self._paths_dict[sources][targets] = func
+        self.validate()
 
-    def convert(self, data, source, target):
+    def convert(self, sources:dict, target, search=path_search.greedy):
         """Return the same data, once converted to target from source"""
         path = solving.windowed_shortest_path(self.paths_dict, source, target)
         for source, target in path:
             data = self.paths_dict[source][target](data)
         return data
 
+    def path(self, data, source, target) -> iter:
+        """Yield the functions"""
+
     @property
-    def paths_dict(self):
-        return self._paths_dict
+    def paths_dict(self) -> dict:
+        return dict(self._paths_dict)
