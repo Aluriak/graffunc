@@ -40,9 +40,9 @@ def greedy(graph:dict, sources:iter, target_types:iter) -> iter:
                 break
         else:  # no possible conversion found
             raise NoPathFound("The following targets are not reachable: " + ', '.join(targets))
-        unused_conversions.remove((preds, succs, func))
         if (yield preds, succs, func) is False:
             pass  # the conversion failed
         else:  # the conversion succeed
+            unused_conversions.remove((preds, succs, func))
             targets -= succs
             founds |= succs
