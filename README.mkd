@@ -2,7 +2,7 @@
 Python package allowing manipulation of data by graph pathfinding.
 
 ## usage example
-(see more in [tests](graffunc/tests/) and [examples](examples/))
+(see more in [tests](graffunc/test/) and [examples](examples/))
 
     from graffunc import graffunc, InconvertibleError
 
