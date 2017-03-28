@@ -6,7 +6,7 @@ all:
 
 t: test
 test:
-	$(PYTHON) -m unittest discover -v
+	pytest graffunc -v --ignore=venv/
 
 
 test_register:
