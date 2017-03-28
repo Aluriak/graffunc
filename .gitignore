@@ -6,3 +6,4 @@ venv/
 asp_materials/
 conspread.egg-info/
 dist/
+.cache/
