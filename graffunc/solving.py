@@ -7,10 +7,7 @@ from itertools import islice
 
 import networkx as nx
 
-from . import commons
-
-
-LOGGER = commons.logger()
+from graffunc import logger
 
 
 def windowed_shortest_path(graph, source, target):

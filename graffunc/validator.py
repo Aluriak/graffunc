@@ -7,17 +7,15 @@ as soon as an unexpected value is found.
 """
 import inspect
 from . import commons
-
-
-LOGGER = commons.logger()
+from graffunc import logger
 
 
 def validate_paths_dict(paths_dict):
     """Raise ValueError if given dict is not a {string: {string: callable(1)}}
     where data is valid"""
-    [validate_identifier(key) for key in paths_dict]
-    [validate_identifier(key) for subdict in paths_dict.values()
-                              for key in subdict]
+    [validate_identifier_set(key) for key in paths_dict]
+    [validate_identifier_set(key) for subdict in paths_dict.values()
+                                  for key in subdict]
     [validate_callable(func)  for subdict in paths_dict.values()
                               for func in subdict.values()]
 
@@ -33,6 +31,13 @@ def validate_callable(func):
     if not callable(func) or nb_args != 1:
         raise ValueError('Callable ' + func.__name__
                          + 'takes more than one parameter')
+
+def validate_identifier_set(ids:frozenset):
+    if isinstance(ids, frozenset):
+        for idt in ids:
+            validate_identifier(idt)
+    else:
+        raise ValueError("Predecessors and Successors must be wrapped in a frozenset.")
 
 def validate_identifier(idt):
     if not isinstance(idt, str):

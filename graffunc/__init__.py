@@ -1,5 +1,3 @@
-# configure the logger
-from .commons import configure_logger
-configure_logger()
-
-from .graffunc import graph
+from graffunc.errors import InconvertibleError, NoPathFound
+from graffunc.commons import logger
+from graffunc.graffunc import graffunc
