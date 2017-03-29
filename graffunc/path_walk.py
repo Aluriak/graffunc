@@ -42,7 +42,7 @@ def theoric_exploration(conv_graph:dict, sources:iter) -> iter((callable, type))
     path = next(searcher, None)
     while path:
         preds, succs, converter = path
-        assert conv_graph[preds][succs] == converter
+        assert converter in conv_graph[preds][succs]
         yield converter, succs
         path = next(searcher, None)
 
