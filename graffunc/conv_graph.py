@@ -9,14 +9,17 @@ import itertools
 def flatted_conversions(conv_graph:dict) -> iter:
     """Yield 3-uplet (predecessors, successors, conversion function)"""
     for preds, succ_map in conv_graph.items():
-        for succs, func in succ_map.items():
-            yield preds, succs, func
+        for succs, funcs in succ_map.items():
+            for func in funcs:
+                yield preds, succs, func
 
 
 def conversion_functions(conv_graph:dict) -> iter:
     """Yield all functions found in given conversion graph"""
     yield from itertools.chain.from_iterable(
-        target_map.values() for target_map in conv_graph.values()
+        funcs
+        for target_map in conv_graph.values()
+        for funcs in target_map.values()
     )
 
 
