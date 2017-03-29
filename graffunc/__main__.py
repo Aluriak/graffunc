@@ -27,5 +27,9 @@ grfc.add(my_b_to_c_converter, sources={'b'}, targets={'c'})
 grfc.add(my_a_to_c_converter, sources={'a'}, targets={'c'})
 
 
+assert {'a', 'b', 'c'} == grfc.reachables_types(sources={'a'})
+assert {'b', 'c'} == grfc.reachables_types(sources={'b'})
+assert {'c'} == grfc.reachables_types(sources={'c'})
+
 assert {'b': 'HELLO'} == grfc.convert(sources={'a': 'hello'}, targets={'b'})
 assert {'c': 'payload: HELLO/payload'} == grfc.convert(sources={'a': 'hello'}, targets={'c'})

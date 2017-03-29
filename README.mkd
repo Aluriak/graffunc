@@ -1,28 +1,37 @@
-# Graffunc -- The data structure that is a graph of functions
-Python 3 package allowing manipulation of data by graph pathfinding.
+# Graffunc -- The graph of function data structure
+Python package allowing manipulation of data by graph pathfinding.
 
 ## usage example
+(see more in [tests](graffunc/test/) and [examples](examples/))
 
-    import graffunc
+    from graffunc import graffunc, InconvertibleError
 
-    # define my converters
+
     def my_a_to_b_converter(a):
         b = a.upper()
-        return b
-
+        return {'b': b}
     def my_b_to_c_converter(b):
         c = 'payload: ' + b + '/payload'
-        return c
+        return {'c': c}
+    def my_a_to_c_converter(a):
+        raise InconvertibleError()
 
 
     # creation of the main object
-    cp = graffunc.ConvertionPropagater({
-        'a': {'b': my_a_to_b_converter},
-        'b': {'c': my_b_to_c_converter},
+    grfc = graffunc({
+        ('a',): {('b',): my_a_to_b_converter},
     })
+    # dynamic modification of the object
+    grfc.add(my_b_to_c_converter, sources={'b'}, targets={'c'})
+    grfc.add(my_a_to_c_converter, sources={'a'}, targets={'c'})
 
-    # convert a to c
-    assert cp.convert('data', source='a', target='c') == 'payload: DATA/payload'
+
+    assert {'a', 'b', 'c'} == grfc.reachables_types(sources={'a'})
+    assert {'b', 'c'} == grfc.reachables_types(sources={'b'})
+    assert {'c'} == grfc.reachables_types(sources={'c'})
+
+    assert {'b': 'HELLO'} == grfc.convert(sources={'a': 'hello'}, targets={'b'})
+    assert {'c': 'payload: HELLO/payload'} == grfc.convert(sources={'a': 'hello'}, targets={'c'})
 
 
 ## installation
@@ -32,4 +41,3 @@ Python 3 package allowing manipulation of data by graph pathfinding.
 
 ## links
 [github](http://github.com/aluriak/graffunc) and [pypi](http://pypi.python.org/pypi/graffunc)
-

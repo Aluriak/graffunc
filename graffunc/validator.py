@@ -31,9 +31,12 @@ def validate_callable_set(functions:set):
 
 def validate_callable(func):
     nb_args = positional_parameter_count(func)
-    if not callable(func) or nb_args != 1:
-        raise ValueError('Callable ' + func.__name__
-                         + 'takes more than one parameter')
+    if not callable(func):
+        raise ValueError(func.__name__ + " is not a callable, but a {}."
+                         "".format(type(func)))
+    if nb_args == 0:
+        raise ValueError("Callable " + func.__name__
+                         + "takes exactly 0 parameter.")
 
 def validate_identifier_set(ids:frozenset):
     if isinstance(ids, frozenset):

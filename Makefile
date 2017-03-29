@@ -6,7 +6,7 @@ all:
 
 t: test
 test:
-	pytest graffunc -v --ignore=venv/
+	pytest graffunc -v --ignore=venv/ --doctest-module
 
 
 test_register:
@@ -21,3 +21,6 @@ upload:
 	$(PYTHON) setup.py sdist upload
 install:
 	$(PYTHON) -m pip install -U $(PACKAGE)
+
+devel:
+	pip devel

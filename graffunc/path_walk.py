@@ -18,7 +18,6 @@ def theoric(conv_graph:dict, sources:iter, targets:iter,
     """True if targets can be reached by starting from sources in conv_graph."""
     reached = set(sources)
     searcher = search(conv_graph, frozenset(reached), frozenset(targets))
-    conversion_succeed = True
 
     path = next(searcher, None)
     while path:
@@ -29,6 +28,23 @@ def theoric(conv_graph:dict, sources:iter, targets:iter,
             return True
         path = next(searcher, None)
     return False
+
+
+def theoric_exploration(conv_graph:dict, sources:iter) -> iter((callable, type)):
+    """Return all theorically reachable targets by starting
+    from sources in conv_graph.
+
+    yield -- (conversion function, obtained types)
+
+    """
+    searcher = path_search.exploration(conv_graph, frozenset(sources))
+
+    path = next(searcher, None)
+    while path:
+        preds, succs, converter = path
+        assert conv_graph[preds][succs] == converter
+        yield converter, succs
+        path = next(searcher, None)
 
 
 def applied(conv_graph:dict, sources:dict, targets:iter,
@@ -42,7 +58,6 @@ def applied(conv_graph:dict, sources:dict, targets:iter,
     """
     data = dict(sources)  # {type: value} for all found data
     searcher = search(conv_graph, frozenset(data), frozenset(targets))
-    conversion_succeed = True
 
     path = next(searcher, None)
     while path:

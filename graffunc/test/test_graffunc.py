@@ -43,3 +43,13 @@ def test_graffunc_api_convert_1(grfc):
 def test_graffunc_api_convert_2(grfc):
     expected = {'c': 'payload: HELLO/payload'}
     assert expected == grfc.convert(sources={'a': 'hello'}, targets={'c'})
+
+
+def test_graffunc_api_reachable_a(grfc):
+    assert {'a', 'b', 'c'} == grfc.reachables_types(sources={'a'})
+
+def test_graffunc_api_reachable_b(grfc):
+    assert {'b', 'c'} == grfc.reachables_types(sources={'b'})
+
+def test_graffunc_api_reachable_c(grfc):
+    assert {'c'} == grfc.reachables_types(sources={'c'})
