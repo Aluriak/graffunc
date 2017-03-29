@@ -16,8 +16,8 @@ def validate_paths_dict(paths_dict):
     [validate_identifier_set(key) for key in paths_dict]
     [validate_identifier_set(key) for subdict in paths_dict.values()
                                   for key in subdict]
-    [validate_callable(func)  for subdict in paths_dict.values()
-                              for func in subdict.values()]
+    [validate_callable_set(func)  for subdict in paths_dict.values()
+                                  for func in subdict.values()]
 
 def positional_parameter_count(func):
     """Return the number of positional parameters that have no default values"""
@@ -25,6 +25,9 @@ def positional_parameter_count(func):
     return len([param for param in sig.parameters.values()
                 if param.kind == param.POSITIONAL_OR_KEYWORD
                 and param.default is param.empty])
+
+def validate_callable_set(functions:set):
+    [validate_callable(func) for func in functions]
 
 def validate_callable(func):
     nb_args = positional_parameter_count(func)
