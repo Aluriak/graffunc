@@ -18,9 +18,10 @@ class graffunc:
     """
 
     def __init__(self, paths_dict=None):
-        """Expect a dict {source: {target: converter function}}"""
-        self._paths_dict = defaultdict(dict, {
-            frozenset(preds): {frozenset(succs): func for succs, func in sub.items()}
+        """Expect a dict {{sources}: {{targets}: {converter function}}}"""
+        self._paths_dict = defaultdict(lambda: defaultdict(set), {
+            frozenset(preds): defaultdict(set, {frozenset(succs): {func}
+                                                for succs, func in sub.items()})
             for preds, sub in (paths_dict or {}).items()
         })
         self.validate()
@@ -36,13 +37,7 @@ class graffunc:
     def add(self, func:callable, sources:iter, targets:iter):
         """Add given func as converter from source to target"""
         sources, targets = frozenset(sources), frozenset(targets)
-        previous_converter = self._paths_dict[sources].get(targets, None)
-        if previous_converter:
-            raise ValueError('A converter ' + str(previous_converter)
-                             + ' already exist for source ' + str(sources)
-                             + ' and target ' + str(targets) + '.')
-        else:
-            self._paths_dict[sources][targets] = func
+        self._paths_dict[sources][targets].add(func)
         self.validate()
 
     def convert(self, sources:dict, targets:iter, search=path_search.greedy) -> dict:
@@ -52,8 +47,8 @@ class graffunc:
 
     def path(self, data, source, target) -> iter:
         """Yield the functions"""
-        yield from ()
+        raise NotImplementedError()
 
     @property
     def paths_dict(self) -> dict:
-        return dict(self._paths_dict)
+        return dict({ss: dict(sub) for ss, sub in self._paths_dict.items()})
