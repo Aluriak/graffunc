@@ -23,7 +23,7 @@ def theoric(conv_graph:dict, sources:iter, targets:iter,
     path = next(searcher, None)
     while path:
         preds, succs, converter = path
-        assert conv_graph[preds][succs] == converter
+        assert converter in conv_graph[preds][succs]
         reached |= succs
         if targets.issubset(reached):
             return True
@@ -47,7 +47,7 @@ def applied(conv_graph:dict, sources:dict, targets:iter,
     path = next(searcher, None)
     while path:
         preds, succs, converter = path
-        assert conv_graph[preds][succs] == converter
+        assert converter in conv_graph[preds][succs]
         try:
             results = converter(**{type: data[type] for type in preds}).items()
         except InconvertibleError:
