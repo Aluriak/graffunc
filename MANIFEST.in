@@ -1,6 +1,5 @@
 include *.mkd
 include LICENSE
-recursive-include graffunc *.py
 recursive-include examples *.py
 
 exclude Makefile

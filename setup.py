@@ -1,4 +1,3 @@
-from setuptools   import setup
+from setuptools import setup
 
-
-setup(zip_safe=False)
+setup()
