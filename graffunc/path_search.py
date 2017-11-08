@@ -1,6 +1,6 @@
 """Implementation of various path search.
 
-A path search is basically a generator of path 
+A path search is basically a generator of path
 
 Functions around there share the following properties:
 

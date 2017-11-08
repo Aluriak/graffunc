@@ -10,7 +10,7 @@ on the data, and therefore will return the fully converted data.
 """
 
 
-from graffunc import path_search, InconvertibleError
+from graffunc import path_search, InconvertibleError, call_converter
 
 
 def theoric(conv_graph:dict, sources:iter, targets:iter,
@@ -64,7 +64,7 @@ def applied(conv_graph:dict, sources:dict, targets:iter,
         preds, succs, converter = path
         assert converter in conv_graph[preds][succs]
         try:
-            results = converter(**{type: data[type] for type in preds}).items()
+            results = call_converter(converter, {pred: data[pred] for pred in preds}).items()
         except InconvertibleError:
             results = ()  # there is no results
         for type, val in results:
