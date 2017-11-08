@@ -11,7 +11,7 @@ Functions around there share the following properties:
 """
 
 
-from graffunc import logger, NoPathFound
+from graffunc import NoPathFound
 from graffunc.conv_graph import flatted_conversions, all_types
 
 

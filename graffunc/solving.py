@@ -7,8 +7,6 @@ from itertools import islice
 
 import networkx as nx
 
-from graffunc import logger
-
 
 def windowed_shortest_path(graph, source, target):
     return windowed(shortest_path(graph, source, target), 2)

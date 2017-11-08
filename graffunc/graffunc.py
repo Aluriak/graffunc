@@ -7,7 +7,6 @@ from collections import defaultdict
 
 from . import validator
 from . import solving
-from graffunc import logger
 from graffunc import path_walk, path_search
 
 

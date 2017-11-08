@@ -6,7 +6,6 @@ import pkg_resources  # packaging facilies
 from functools import partial, wraps
 
 from .info import PACKAGE_NAME, PACKAGE_VERSION
-from .logger import logger
 
 
 DIR_ASP_SOURCES = 'asp/'

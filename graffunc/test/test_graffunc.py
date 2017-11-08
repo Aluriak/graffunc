@@ -1,7 +1,7 @@
 
 
 import pytest
-from graffunc import graffunc, InconvertibleError, logger, path_walk
+from graffunc import graffunc, InconvertibleError, path_walk
 
 
 @pytest.fixture

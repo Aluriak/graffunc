@@ -7,7 +7,6 @@ as soon as an unexpected value is found.
 """
 import inspect
 from . import commons
-from graffunc import logger
 
 
 def validate_paths_dict(paths_dict):
