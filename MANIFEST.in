@@ -1,1 +1,6 @@
-include LICENSE MANIFEST.in requirements.txt README.mkd
+include *.mkd
+include LICENSE
+recursive-include graffunc *.py
+recursive-include examples *.py
+
+exclude Makefile
